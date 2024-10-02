@@ -1,18 +1,17 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { Slot } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
 
-const RootLayout = () => {
+const App = () => {
   return (
-    <>
-    <Text>Header</Text>
-    <Slot/>
-    <Text>Footer</Text>
-    </>
+    <View style={styles.container}>
+      <Text>Aora</Text>
+      <StatusBar style='auto'/>
+    </View>
   )
 }
 
-export default RootLayout
+export default App
 
 const styles = StyleSheet.create({
   container: {
