@@ -1,15 +1,19 @@
-import {Text, View } from 'react-native'
+import {View, ScrollView, Image } from 'react-native'
 import React from 'react'
-import { StatusBar } from 'expo-status-bar'
-import { Href, Link } from 'expo-router'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { images } from '../constants'
 
 const App = () => {
   return (
-    <View className="flex-1 items-center justify-center">
-      <Text className='text-3xl font-pblack'>Aora!</Text>
-      <StatusBar style='auto'/>
-      <Link href={"/home" as Href} style={{color:'blue'}}>Go to Home</Link>
-    </View>
+    <SafeAreaView className='bg-primary h-full'>
+      <ScrollView contentContainerStyle={{height:"100%"}}>
+        <View className='w-full h-full items-center px-4'>
+            <Image source={images.logo} className='w-[130px] h-[84px]' resizeMode='contain'>
+              
+            </Image>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 
