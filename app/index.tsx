@@ -1,14 +1,14 @@
 import {Text, View } from 'react-native'
 import React from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { Link } from 'expo-router'
+import { Href, Link } from 'expo-router'
 
 const App = () => {
   return (
     <View className="flex-1 items-center justify-center">
-      <Text className='text-3xl'>Aora!</Text>
+      <Text className='text-3xl font-pblack'>Aora!</Text>
       <StatusBar style='auto'/>
-      <Link href={'/profile'} style={{color:'blue'}}>Go to Profile</Link>
+      <Link href={"/home" as Href} style={{color:'blue'}}>Go to Home</Link>
     </View>
   )
 }

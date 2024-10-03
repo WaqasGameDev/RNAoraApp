@@ -1,3 +1,5 @@
 -created app with expo
 -then linked files with Stack and link
 -then initiated tailwind css
+-add global.d.ts file at root folder with /// <reference types="nativewind/types" />
+-setup routes and screens
