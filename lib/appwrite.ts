@@ -1,4 +1,4 @@
-import { Client, Account, ID } from 'react-native-appwrite';
+import { Client, Account, ID, Avatars, Databases } from 'react-native-appwrite';
 
 export const config = {
     endpoint: 'https://cloud.appwrite.io/v1',
@@ -18,18 +18,56 @@ client
     .setPlatform(config.platform);
 
 const account = new Account(client);
+const avatars = new Avatars(client);
+const databases = new Databases(client)
 
 type CreateUserProps = {
-    username:string
-    email:string
-    password:string
+    username: string
+    email: string
+    password: string
 }
 
-export const createUser = ({username, email, password}:CreateUserProps)=> {
-    account.create(ID.unique(), email, password, username)
-    .then(function (response) {
-        console.log(response);
-    }, function (error) {
-        console.log(error);
-    });
+export const createUser = async ({ username, email, password }: CreateUserProps) => {
+    try {
+        const newAccount = await account.create(ID.unique(), email, password, username)
+
+        if (!newAccount) throw new Error
+
+        const avatarUrl = avatars.getInitials(username)
+
+        await signIn({ email: email, password: password });
+
+        const newUser = await databases.createDocument(
+            config.dababase,
+            config.usersCollection,
+            ID.unique(),
+            {
+                accountId: newAccount.$id,
+                username: username,
+                email: email,
+                avatar: avatarUrl
+            }
+        )
+
+        return newUser
+    } catch (error) {
+        console.error(error)
+        throw new Error(error instanceof Error ? error.message : String(error));
+    }
+}
+
+type SignInProps = {
+    email: string
+    password: string
+}
+
+
+export const signIn = async ({ email, password }: SignInProps) => {
+    try {
+        const newSession = await account.createEmailPasswordSession(email, password)
+        return newSession;
+    } catch (error) {
+        console.error(error)
+        throw new Error(error instanceof Error ? error.message : String(error));
+    }
 }
