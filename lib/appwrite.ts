@@ -10,12 +10,22 @@ export const config = {
     storageId: '66ffb8e80001084c6415'
 }
 
+const {
+    endpoint,
+    platform,
+    project,
+    dababase,
+    usersCollection,
+    videoCollection,
+    storageId
+} = config
+
 const client = new Client();
 
 client
-    .setEndpoint(config.endpoint)
-    .setProject(config.project)
-    .setPlatform(config.platform);
+    .setEndpoint(endpoint)
+    .setProject(project)
+    .setPlatform(platform);
 
 const account = new Account(client);
 const avatars = new Avatars(client);
@@ -38,8 +48,8 @@ export const createUser = async ({ username, email, password }: CreateUserProps)
         await signIn({ email: email, password: password });
 
         const newUser = await databases.createDocument(
-            config.dababase,
-            config.usersCollection,
+            dababase,
+            usersCollection,
             ID.unique(),
             {
                 accountId: newAccount.$id,
@@ -81,9 +91,9 @@ export const getCurrentUser = async ()=>{
         }
 
         const currentUser = await databases.listDocuments(
-            config.dababase,
-            config.usersCollection,
-            [Query.equal('accountId',currentAccount.$id)]
+            dababase,
+            usersCollection,
+           [Query.equal('accountId',currentAccount.$id)]
         )
 
         if(!currentUser){
@@ -92,6 +102,20 @@ export const getCurrentUser = async ()=>{
 
         return currentUser.documents[0]
 
+    } catch (error) {
+        console.error(error)
+        throw new Error(error instanceof Error ? error.message : String(error));
+    }
+}
+
+export const getAllPosts = async ()=>{
+    try {
+       const posts = databases.listDocuments(
+        dababase,
+        videoCollection
+       )
+
+       return (await posts).documents
     } catch (error) {
         console.error(error)
         throw new Error(error instanceof Error ? error.message : String(error));
