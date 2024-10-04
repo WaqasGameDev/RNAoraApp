@@ -26,6 +26,7 @@ const SignIn = () => {
         password: form.password,
       })
 
+      Alert.alert("Success", "User signed in successfully")
       router.replace('/home')
 
     } catch (error) {
