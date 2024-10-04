@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from "../../constants"
 import { CustomButton, FormField } from '../../components'
 import { Link } from 'expo-router'
+import { createUser} from '../../lib/appwrite'
 
 const SignUp = () => {
 
@@ -14,8 +15,12 @@ const SignUp = () => {
   })
 
   const submit = () => {
-
-  }
+    createUser({
+      username: form.username,
+      email: form.email,
+      password: form.password,
+    });
+  };
 
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -53,7 +58,7 @@ const SignUp = () => {
           />
           <CustomButton
             title='Sign Up'
-            handlePressed={() => { submit }}
+            handlePressed={() => { submit() }}
             containerStyles='mt-7'
             isLoading={isSubmitting}
           />
