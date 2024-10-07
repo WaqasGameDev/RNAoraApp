@@ -7,6 +7,7 @@ import Trending from '../../components/Trending'
 import EmptyState from '../../components/EmptyState'
 import { getAllPosts } from '../../lib/appwrite'
 import { useAppWrite } from '../../lib/useAppwrite'
+import VideoCard from '../../components/VideoCard'
 
 const Home = () => {
 
@@ -32,12 +33,11 @@ const Home = () => {
 
   return (
     <SafeAreaView className='bg-primary h-full'>
-      <Text className='text-white text-5xl'>{posts[0].title}</Text> 
       <FlatList
         data={posts} 
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => (
-          <Text className='text-3xl text-white'>{item.title}</Text>
+        <VideoCard {...item}/>
         )}
         ListHeaderComponent={() => (
           <View className='my-6 px-4 space-y-6'>
@@ -69,7 +69,7 @@ const Home = () => {
               <Text className='text-gray-100 text-lg font-pregular mb-3'>
                 Latest Videos
               </Text>
-              <Trending posts={[{ id: 1 }, { id: 2 }, { id: 3 }]} />
+              <Trending posts={[]} />
             </View>
           </View>
         )}
