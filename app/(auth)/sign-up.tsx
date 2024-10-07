@@ -28,6 +28,7 @@ const SignUp = () => {
         password: form.password,
       })
 
+      Alert.alert("Success", "User signed up successfully")
       router.replace('/home')
 
     } catch (error) {

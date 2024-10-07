@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Image, RefreshControl } from 'react-native'
+import { View, Text, FlatList, Image, RefreshControl, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from "../../constants"
@@ -10,7 +10,7 @@ import { useAppWrite } from '../../lib/useAppwrite'
 
 const Home = () => {
 
-  const { data: posts, refetch, isLoading } = useAppWrite(getAllPosts)
+  const { data: posts = [], refetch, isLoading } = useAppWrite(getAllPosts)
 
   const [refreshing, setRefreshing] = useState(false)
 
@@ -20,13 +20,24 @@ const Home = () => {
     setRefreshing(false)
   }
 
+  console.log(posts)
+
+  if (isLoading && !posts.length) {
+    return (
+      <SafeAreaView className='bg-primary h-full flex justify-center items-center'>
+        <ActivityIndicator size="large" color="#fff" />
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView className='bg-primary h-full'>
+      <Text className='text-white text-5xl'>{posts[0].title}</Text> 
       <FlatList
-        data={[{ id: 1 }, { id: 2 }, { id: 3 }]} 
-        keyExtractor={(item) => item.id.toString()}
+        data={posts} 
+        keyExtractor={(item) => item.$id}
         renderItem={({ item }) => (
-          <Text className='text-3xl text-white'>{item.id}</Text>
+          <Text className='text-3xl text-white'>{item.title}</Text>
         )}
         ListHeaderComponent={() => (
           <View className='my-6 px-4 space-y-6'>
@@ -74,7 +85,8 @@ const Home = () => {
         />}
       />
     </SafeAreaView>
-  )
-}
+  );
+};
+
 
 export default Home
