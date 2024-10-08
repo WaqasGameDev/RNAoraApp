@@ -16,7 +16,7 @@ type CreaterProps = {
 }
 
 const VideoCard = (videocard:VideoCardProps) => {
-    console.log(videocard)
+    
     const [play, setPlay] = useState(false)
   return (
     <View className=' flex-col items-center px-4 mb-14'>

@@ -121,3 +121,18 @@ export const getAllPosts = async ()=>{
         throw new Error(error instanceof Error ? error.message : String(error));
     }
 }
+
+export const getTrendingPosts = async ()=>{
+    try {
+       const posts = databases.listDocuments(
+        dababase,
+        videoCollection,
+        [Query.orderDesc('$createdAt'), Query.limit(7)]
+       )
+
+       return (await posts).documents
+    } catch (error) {
+        console.error(error)
+        throw new Error(error instanceof Error ? error.message : String(error));
+    }
+}

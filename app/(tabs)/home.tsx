@@ -5,13 +5,15 @@ import { images } from "../../constants"
 import SearchInput from '../../components/SearchInput'
 import Trending from '../../components/Trending'
 import EmptyState from '../../components/EmptyState'
-import { getAllPosts } from '../../lib/appwrite'
+import { getAllPosts, getTrendingPosts } from '../../lib/appwrite'
 import { useAppWrite } from '../../lib/useAppwrite'
 import VideoCard from '../../components/VideoCard'
 
 const Home = () => {
 
   const { data: posts = [], refetch, isLoading } = useAppWrite(getAllPosts)
+
+  const { data: trendingPosts = [], refetch: refetchLatest, isLoading: isTrendingPostsReloading } = useAppWrite(getTrendingPosts)
 
   const [refreshing, setRefreshing] = useState(false)
 
@@ -21,9 +23,7 @@ const Home = () => {
     setRefreshing(false)
   }
 
-  console.log(posts)
-
-  if (isLoading && !posts.length) {
+  if (isLoading && !posts.length && isTrendingPostsReloading && !trendingPosts.length) {
     return (
       <SafeAreaView className='bg-primary h-full flex justify-center items-center'>
         <ActivityIndicator size="large" color="#fff" />
@@ -69,7 +69,7 @@ const Home = () => {
               <Text className='text-gray-100 text-lg font-pregular mb-3'>
                 Latest Videos
               </Text>
-              <Trending posts={[]} />
+              <Trending posts={trendingPosts}/>
             </View>
           </View>
         )}
