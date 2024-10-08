@@ -167,3 +167,14 @@ export const getUserPosts = async (userId:string)=>{
         throw new Error(error instanceof Error ? error.message : String(error));
     }
 }
+
+export const signout = async ()=>{
+    
+    try {
+       const session = await account.deleteSession('current')
+       return session
+    } catch (error) {
+        console.error(error)
+        throw new Error(error instanceof Error ? error.message : String(error));
+    }
+}

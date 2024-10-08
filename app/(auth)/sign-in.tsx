@@ -4,9 +4,12 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from "../../constants"
 import { CustomButton, FormField } from '../../components'
 import { Link, router } from 'expo-router'
-import { signIn } from '../../lib/appwrite'
+import { signIn, getCurrentUser } from '../../lib/appwrite'
+import { useGlobalContext } from '../../context/GlobalProvider'
 
 const SignIn = () => {
+
+  const {setUser, setIsLoggedIn } = useGlobalContext();
 
   const [form, setForm] = useState({
     email: '',
@@ -26,6 +29,23 @@ const SignIn = () => {
         password: form.password,
       })
 
+      const user = await getCurrentUser()
+
+      getCurrentUser()
+        .then((currentUser)=>{
+            if(currentUser){
+                setIsLoggedIn(true);
+                setUser(currentUser)
+            }
+            else{
+                setIsLoggedIn(false);
+                setUser(null)
+            }
+        })
+        .catch((error)=>{
+            console.error(error)
+        })
+      
       Alert.alert("Success", "User signed in successfully")
       router.replace('/home')
 

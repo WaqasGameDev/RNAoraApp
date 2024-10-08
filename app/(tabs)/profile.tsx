@@ -3,16 +3,17 @@ import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { icons } from "../../constants"
 import EmptyState from '../../components/EmptyState'
-import { getUserPosts, searchPosts } from '../../lib/appwrite'
+import { getUserPosts, signout } from '../../lib/appwrite'
 import { useAppWrite } from '../../lib/useAppwrite'
 import VideoCard from '../../components/VideoCard'
 import { useGlobalContext } from '../../context/GlobalProvider'
 import InfoBox from '@/components/InfoBox'
+import { router } from 'expo-router'
 
 const Profile = () => {
 
   const { user, setUser, setIsLoggedIn } = useGlobalContext();
-
+  
   const { data: posts = [], refetch, isLoading } = useAppWrite(() => getUserPosts(user.$id))
 
   const [refreshing, setRefreshing] = useState(false)
@@ -23,8 +24,13 @@ const Profile = () => {
     setRefreshing(false)
   }
 
-  const logout = ()=>{
+  const logout = async ()=>{
+    
+      await signout();
+      setUser(null)
+      setIsLoggedIn(false)
 
+      router.replace('/sign-in')
   }
 
   if (isLoading && !posts.length) {
