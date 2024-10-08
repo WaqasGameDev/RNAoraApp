@@ -136,3 +136,18 @@ export const getTrendingPosts = async ()=>{
         throw new Error(error instanceof Error ? error.message : String(error));
     }
 }
+
+export const searchPosts = async (query:string)=>{
+    try {
+       const posts = databases.listDocuments(
+        dababase,
+        videoCollection,
+        [Query.search('title', query)]
+       )
+
+       return (await posts).documents
+    } catch (error) {
+        console.error(error)
+        throw new Error(error instanceof Error ? error.message : String(error));
+    }
+}
