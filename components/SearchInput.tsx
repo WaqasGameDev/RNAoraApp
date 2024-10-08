@@ -20,6 +20,7 @@ const SearchInput = ({ title, value, placeholder, handleChangeText, otherStyles,
                 value={value}
                 placeholder={placeholder}
                 onChangeText={handleChangeText}
+                placeholderTextColor="#636565" 
                 secureTextEntry={title === "Password" && !showPassword}
             />
             <TouchableOpacity>
