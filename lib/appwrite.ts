@@ -151,3 +151,19 @@ export const searchPosts = async (query:string)=>{
         throw new Error(error instanceof Error ? error.message : String(error));
     }
 }
+
+export const getUserPosts = async (userId:string)=>{
+    
+    try {
+       const posts = databases.listDocuments(
+        dababase,
+        videoCollection,
+        [Query.equal('creator', userId)]
+       )
+
+       return (await posts).documents
+    } catch (error) {
+        console.error(error)
+        throw new Error(error instanceof Error ? error.message : String(error));
+    }
+}

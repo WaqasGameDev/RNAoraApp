@@ -7,7 +7,7 @@ interface GlobalContextType {
     isLoading: boolean;
     setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
     user: any;
-    SetUser: React.Dispatch<React.SetStateAction<any>>;
+    setUser: React.Dispatch<React.SetStateAction<any>>;
   }
 
   const GlobalContext = createContext<GlobalContextType | null>(null);
@@ -26,7 +26,7 @@ interface GlobalProviderProps {
 
 export const GlobalProvider = ({ children }: GlobalProviderProps) => {
     const[isLoggedIn, setIsLoggedIn] = useState(false)
-    const [user, SetUser] = useState<any>(null);
+    const [user, setUser] = useState<any>(null);
     const[isLoading,setIsLoading] = useState(false)
 
     useEffect(()=>{
@@ -34,11 +34,11 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
         .then((currentUser)=>{
             if(currentUser){
                 setIsLoggedIn(true);
-                SetUser(null)
+                setUser(currentUser)
             }
             else{
                 setIsLoggedIn(false);
-                SetUser(currentUser)
+                setUser(null)
             }
         })
         .catch((error)=>{
@@ -56,7 +56,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
             isLoading,
             setIsLoading,
             user,
-            SetUser
+            setUser: setUser
         }}>
             {children}
         </GlobalContext.Provider>
